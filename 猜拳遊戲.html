@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<style>
+
+*{
+    box-sizing: border-box;
+}
+
+body{
+    margin: 0;
+    width:100%;
+    height:100vh;
+    background-color:rgb(36,86,61) ;
+}
+.container{
+    width:100%;
+    height:100vh;
+    display:flex;
+    flex-wrap: wrap;
+}
+
+/* -----------------------遊戲桌------------------------------------ */
+.table{
+    width:70%;
+    height:70%;
+    border-right:10px solid rgb(229,178,122);
+    border-bottom:10px solid rgb(229,178,122);
+    display: flex;
+    justify-content: center;
+    align-items:center ;
+}
+.your,.sys,.final{
+    width:20%;
+    height: 55%;
+    background-image: url(./卡背4.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 15px;
+    position: relative;
+
+}
+
+
+.final{
+    margin:0 3% 0 3%;
+}
+
+.word{
+    width:auto;
+    font-size: 22px;
+    color:white;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 600;
+    position: absolute;
+    bottom:-20%;
+    left:50%;
+    transform: translateX(-50%);
+}
+
+#note-span{
+    width:100px;
+    display:inline;
+    font-size: 22px;
+    color:white;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 600;
+    
+}
+/* ----------------------記錄版-------------------------------- */
+.note{
+    width:30%;
+    height:70%;
+    border-bottom:10px solid rgb(229,178,122);
+    font-size: 16px;
+    color:white;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 600;
+}
+/* ------------------------你的選擇-------------------------------------- */
+.youturn{
+    width:70%;
+    height:30%;
+    border-right:10px solid rgb(229,178,122);
+    display:flex;
+    justify-content: center;
+    align-items:center ;
+    flex-wrap: wrap;
+
+    
+}
+
+.scissor,.stone, .paper{
+    width:14%;
+    height: 65%;
+    /* background-size: 95%; */
+    background-position: center;
+    border-radius: 15px;
+    margin-top: 1%;
+
+}
+.scissor{
+    background-image: url(./scissor.png);
+    background-size: 95%;
+}
+
+.stone{
+    margin:1% 3% 0 3%;
+    background-image: url(./stone.jpg);
+    background-size: 95%;
+}
+.paper{
+    background-image: url(./paper.png);
+    background-size: 110%;
+}
+span{
+    display: inline-block;
+    width:100%;
+    text-align: center;
+    /* margin-top: 0.05%; */
+    font-size: 22px;
+    color:white;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 600;
+
+}
+
+
+/* ---------------------------勝負-------------------------------------------- */
+.computer{
+    width:30%;
+    height:30%;
+    background-image: url(./mac.png);
+    background-size: 50%;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: relative;
+
+}
+
+
+.talk{
+    width:250px;
+    height:250px;
+    background-image: url(./talkbox.gif);
+    background-size: 90%;
+    background-repeat: no-repeat;
+    position: absolute;
+    top:-50%;
+    left:-40%;
+    font-size: 30px;
+    color: black;
+    font-weight: 600;
+    text-align: center;
+    line-height: 150px;
+}
+
+
+
+
+
+
+</style>
+
+
+
+
+</head>
+<body>
+    
+    <div class="container">
+        <div class="table">
+
+            <div class="your"><div class="word">你的手</div></div>
+            <div class="final"><div class="word">結果</div></div> 
+            <div class="sys"><div class="word">虛擬人</div></div>
+        </div>
+
+        <div class="note"><div id="note-span">遊戲紀錄</div><br></div>
+
+        <div class="youturn">
+            <div class="scissor"></div>
+            <div class="stone"></div> 
+            <div class="paper"></div>
+            <span>請選擇你要出的手</span>
+
+        </div>
+
+        
+        <div class="computer"><div class="talk" hidden></div></div>
+        
+
+
+
+    </div>
+
+
+
+
+<script>
+  
+let your = document.querySelector('.your');
+let final = document.querySelector('.final');
+let sys = document.querySelector('.sys');
+let note = document.querySelector('.note');
+let scissor = document.querySelector('.scissor');
+let stone = document.querySelector('.stone');
+let paper = document.querySelector('.paper');
+let talk = document.querySelector('.talk');
+let count = 0
+let a = Math.random()
+// console.log(a);
+let b = Math.floor( a * 3 )+1
+// console.log(b);
+
+let yourHand = 0;
+
+// --------------------------------------------------------------
+
+scissor.addEventListener('click',function(){
+    a = Math.random();
+    // console.log(a);
+    b = Math.floor( a * 3 )+1;
+    // console.log(b);
+    count = count + 1;
+
+   if ( b == 1 ){
+        sys.style.backgroundImage='url(./scissor.png)';
+   }else if( b == 2 ){
+        sys.style.backgroundImage='url(./stone.jpg)';
+        
+   }else if( b == 3 ){
+        sys.style.backgroundImage='url(./paper.png)';
+   }
+    
+   your.style.backgroundImage='url(./scissor.png)';
+
+//    yourHand=1;
+   talk.style.display='block';
+
+   if ( b ==  1){
+    final.style.backgroundImage='url(./平手2.png)';
+    talk.innerHTML='我們平手!';
+    note.innerHTML += `第${count}次:我們平手!<br>`;
+   } else if( b == 2 ){
+    final.style.backgroundImage='url(./loose.gif)';
+    talk.innerHTML = '我贏了!';
+    note.innerHTML += `第${count}次:你輸了!<br>`;
+   }else if( b  == 3 ){
+    final.style.backgroundImage='url(./youwin.gif)';
+    talk.innerHTML='你贏了!';
+    note.innerHTML += `第${count}次:你贏了!<br>`;
+   }
+  
+   
+})
+
+
+// ----------------------------------------------------------------
+stone.addEventListener('click',function(){
+    a = Math.random();
+    // console.log(a);
+    b = Math.floor( a * 3 )+1;
+    // console.log(b);
+    count = count + 1;
+
+   if ( b == 1 ){
+        sys.style.backgroundImage='url(./scissor.png)';
+   }else if( b == 2 ){
+        sys.style.backgroundImage='url(./stone.jpg)';
+        
+   }else if( b == 3 ){
+        sys.style.backgroundImage='url(./paper.png)';
+   }
+    
+   your.style.backgroundImage='url(./stone.jpg)';
+
+//    yourHand=2;
+    talk.style.display='block';
+
+   if ( b ==  2){
+    final.style.backgroundImage='url(./平手2.png)';
+    talk.innerHTML='我們平手!';
+    note.innerHTML += `第${count}次:我們平手!<br>`;
+   } else if( b == 3){
+    final.style.backgroundImage='url(./loose.gif)';
+    talk.innerHTML='我贏了!';
+    note.innerHTML += `第${count}次:你輸了!<br>`;
+   }else if( b == 1 ){
+    final.style.backgroundImage='url(./youwin.gif)';
+    talk.innerHTML='你贏了!';
+    note.innerHTML += `第${count}次:你贏了!<br>`;
+   }
+
+})
+
+
+// -------------------------------------------------------------
+paper.addEventListener('click',function(){
+    a = Math.random();
+    // console.log(a);
+    b = Math.floor( a * 3 )+1;
+    // console.log(b);
+
+    count = count + 1;
+   if ( b == 1 ){
+        sys.style.backgroundImage='url(./scissor.png)';
+   }else if( b == 2 ){
+        sys.style.backgroundImage='url(./stone.jpg)';
+        
+   }else if( b == 3 ){
+        sys.style.backgroundImage='url(./paper.png)';
+   }
+    
+   your.style.backgroundImage='url(./paper.png)';
+
+//    yourHand=3;
+    talk.style.display='block';
+
+   if ( b == 3 ){
+    final.style.backgroundImage='url(./平手2.png)';
+    talk.innerHTML='我們平手!';
+    note.innerHTML += `第${count}次:我們平手!<br>`;
+   } else if( b == 2 ){
+    final.style.backgroundImage='url(./youwin.gif)';
+    talk.innerHTML='你贏了!';
+    note.innerHTML += `第${count}次:你贏了!<br>`;
+   } else if( b == 1 ){
+    final.style.backgroundImage='url(./loose.gif)';
+    talk.innerHTML='我贏了!';
+    note.innerHTML += `第${count}次:你輸了!<br>`;
+   }
+    
+
+})
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
+
+
+
+
+
+
+
+</body>
+</html>
